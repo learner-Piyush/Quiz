@@ -65,3 +65,11 @@ button:hover{
 .hidden{
   display: none;
 }
+
+.correct{
+  background-color: mediumspringgreen;
+}
+
+.incorrect{
+  background-color: red;
+}
