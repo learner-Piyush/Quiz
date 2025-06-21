@@ -9,3 +9,12 @@ You can try another round by clicking the "restart" button and same questions wi
 Logic is simple if you open and look at the JS file.
 
 Let me know if you like the design and experience.
+
+# Assignment 1
+
+This Project had an assignment that when an user clicks the correct option, it will glow green.
+And when the user clicks the incorrect option, it will glow red and correct option will be highlighted as well.
+
+If you think that the option glows because you clicked an option, you are right.
+But if you think you clicked the wrong option and the correct option glows and you'll click the correct one to get 100% score then you are wrong.
+After clicking an option, the cursor will be unable to click the option untill and unless you click the next button.
