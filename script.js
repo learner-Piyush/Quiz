@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
     const startButton = document.getElementById("start-button")
-    const nextButton = document.getElementById("next-button")
+    // const nextButton = document.getElementById("next-button")
     const restartButton = document.getElementById("restart-button")
     const questionContainer = document.getElementById("question-container")
     const questionText = document.getElementById("question-text")
     const choicesList = document.getElementById("choices-list")
+    const progressLevel = document.getElementById("progress-level")
     const resultContainer = document.getElementById("result-container")
     const scoreDisplay = document.getElementById("score")
 
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
             answer: "Mars",
         },
         {
-            question: "What is 5 × 6?",
+            question: "What is 5 x 6?",
             choices: ["30", "20", "25", "45"],
             answer: "30",
         },
@@ -45,14 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
         showQuestion()
     })
 
-    nextButton.addEventListener("click", () => {
+    /* nextButton.addEventListener("click", () => {
         currentQuestionIndex++
         if (currentQuestionIndex < questions.length) {
             showQuestion()
         } else {
             showResult()
         }
-    })
+    }) */
 
     restartButton.addEventListener("click", () => {
         currentQuestionIndex = 0
@@ -62,43 +63,56 @@ document.addEventListener("DOMContentLoaded", () => {
         showQuestion()
     })
 
-    function showQuestion() {
-        nextButton.classList.add("hidden")
-        questionText.textContent = questions[currentQuestionIndex].question
-        choicesList.innerHTML = ""
+function showQuestion() {
+    progressLevel.style.transition = "none"
+    progressLevel.style.width = "0"
+    void progressLevel.offsetWidth
+    // nextButton.classList.add("hidden")
+    questionText.textContent = questions[currentQuestionIndex].question
+    choicesList.innerHTML = ""
         questions[currentQuestionIndex].choices.forEach(choice => {
             const li = document.createElement("li")
             li.textContent = choice
-            li.classList.remove("correct", "incorrect")
-            li.style.pointerEvents = "auto"  // Enable clicking
             li.addEventListener("click", () => {
-                selectAnswer(li, choice)
+                // Disable all li clicks after one selection
+                Array.from(choicesList.children).forEach(li => {
+                    li.style.pointerEvents = "none"
+                })
+
+                const correctAnswer = questions[currentQuestionIndex].answer
+                if (choice === correctAnswer) {
+                    li.classList.add("correct")
+                    score++
+                } else {
+                    li.classList.add("incorrect")
+                }
+
+                // Highlight the correct answer
+                Array.from(choicesList.children).forEach(li => {
+                    if (li.textContent === correctAnswer) {
+                        li.classList.add("correct")
+                    }
+                })
+
+                setTimeout(() => {
+                    currentQuestionIndex++
+                    if (currentQuestionIndex < questions.length) {
+                        showQuestion()
+                    } else {
+                        showResult()
+                    }
+                }, 5000);
+
+                setTimeout(() => {
+                    progressLevel.style.transition = "width 5s"
+                    progressLevel.style.width = "100%"
+                }, 1);
+
+                // nextButton.classList.remove("hidden")
             })
             choicesList.appendChild(li)
         });
-    }
-
-    function selectAnswer(li, choice) {
-        const correctAnswer = questions[currentQuestionIndex].answer
-        if (choice === correctAnswer) {
-            li.classList.add("correct")
-            score++
-        } else {
-            li.classList.add("incorrect")
-            // Highlight the correct option as well
-            Array.from(choicesList.children).forEach(child => {
-                if (child.textContent === correctAnswer) {
-                    child.classList.add("correct")
-                }
-            })
-        }
-        // Disable clicking on all options after one is clicked
-        Array.from(choicesList.children).forEach(child => {
-            child.style.pointerEvents = "none"
-        })
-        
-        nextButton.classList.remove("hidden")
-    }
+}
 
     function showResult() {
         questionContainer.classList.add("hidden")
