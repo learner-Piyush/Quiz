@@ -69,18 +69,34 @@ document.addEventListener("DOMContentLoaded", () => {
         questions[currentQuestionIndex].choices.forEach(choice => {
             const li = document.createElement("li")
             li.textContent = choice
+            li.classList.remove("correct", "incorrect")
+            li.style.pointerEvents = "auto"  // Enable clicking
             li.addEventListener("click", () => {
-                selectAnswer(choice)
+                selectAnswer(li, choice)
             })
             choicesList.appendChild(li)
         });
     }
 
-    function selectAnswer(choice) {
+    function selectAnswer(li, choice) {
         const correctAnswer = questions[currentQuestionIndex].answer
         if (choice === correctAnswer) {
+            li.classList.add("correct")
             score++
+        } else {
+            li.classList.add("incorrect")
+            // Highlight the correct option as well
+            Array.from(choicesList.children).forEach(child => {
+                if (child.textContent === correctAnswer) {
+                    child.classList.add("correct")
+                }
+            })
         }
+        // Disable clicking on all options after one is clicked
+        Array.from(choicesList.children).forEach(child => {
+            child.style.pointerEvents = "none"
+        })
+        
         nextButton.classList.remove("hidden")
     }
 
