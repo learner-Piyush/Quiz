@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
             answer: "Mars",
         },
         {
-            question: "What is 5 x 6?",
+            question: "What is 5 × 6?",
             choices: ["30", "20", "25", "45"],
             answer: "30",
         },
